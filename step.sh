@@ -73,7 +73,7 @@ if [ "$INVALID_INPUT" == true ]; then
   exit 1
 fi
 
-BITBUCKET_API_ENDPOINT="https://$domain/rest/build-status/1.0/commits/$git_clone_commit_hash"
+BITBUCKET_API_ENDPOINT="$domain/rest/build-status/1.0/commits/$git_clone_commit_hash"
 
 echo "Post build status: $BITBUCKET_BUILD_STATE"
 echo "API Endpoint: $BITBUCKET_API_ENDPOINT"
@@ -87,6 +87,7 @@ echo "API Endpoint: $BITBUCKET_API_ENDPOINT"
 
 curl $BITBUCKET_API_ENDPOINT \
   -X POST \
+  --ssl \
   -i \
   -u $username:$password \
   -H 'Content-Type: application/json' \
@@ -98,4 +99,5 @@ curl $BITBUCKET_API_ENDPOINT \
         \"url\": \"$build_url\",
         \"description\": \"workflow: $triggered_workflow_id\"
        }" \
-   --compressed
+   --compressed \
+   --verbose
